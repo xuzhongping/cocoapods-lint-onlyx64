@@ -8,4 +8,6 @@ A description of cocoapods-lint-onlyx64.
 
 ## Usage
 
-    $ pod spec onlyx64 POD_NAME
+    $ pod lib lint xxx --onlyx64
+    $ pod spec lint xxx --onlyx64
+    $ pod repo push xxx --onlyx64
