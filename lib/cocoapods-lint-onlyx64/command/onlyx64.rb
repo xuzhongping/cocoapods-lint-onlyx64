@@ -56,7 +56,7 @@ module Pod
             ['--no-subspecs', 'Lint skips validation of subspecs'],
             ['--no-clean', 'Lint leaves the build directory intact for inspection'],
             ['--fail-fast', 'Lint stops on the first failing platform or subspec'],
-            ['', 'Lint uses static libraries to install the spec'],
+            ['--use-libraries', 'Lint uses static libraries to install the spec'],
             ['--use-modular-headers', 'Lint uses modular headers during installation'],
             ["--sources=#{Pod::TrunkSource::TRUNK_REPO_URL}", 'The sources from which to pull dependent pods ' \
               "(defaults to #{Pod::TrunkSource::TRUNK_REPO_URL}). Multiple sources must be comma-delimited"],
