@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cocoapods-lint-onlyx64 (0.1.0)
+    cocoapods-lint-onlyx64 (0.1.1)
       cocoapods (= 1.9.3)
 
 GEM
@@ -107,4 +107,4 @@ DEPENDENCIES
   rake
 
 BUNDLED WITH
-   2.1.4
+   2.2.31

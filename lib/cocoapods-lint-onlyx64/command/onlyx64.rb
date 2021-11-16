@@ -48,54 +48,18 @@ module Pod
   class Command
     class Lib < Command
       class Lint < Lib
+        class << self
+          alias_method :original_options, :options
+        end
         def self.options
-          [
-            ['--quick', 'Lint skips checks that would require to download and build the spec'],
-            ['--allow-warnings', 'Lint validates even if warnings are present'],
-            ['--subspec=NAME', 'Lint validates only the given subspec'],
-            ['--no-subspecs', 'Lint skips validation of subspecs'],
-            ['--no-clean', 'Lint leaves the build directory intact for inspection'],
-            ['--fail-fast', 'Lint stops on the first failing platform or subspec'],
-            ['--use-libraries', 'Lint uses static libraries to install the spec'],
-            ['--use-modular-headers', 'Lint uses modular headers during installation'],
-            ["--sources=#{Pod::TrunkSource::TRUNK_REPO_URL}", 'The sources from which to pull dependent pods ' \
-              "(defaults to #{Pod::TrunkSource::TRUNK_REPO_URL}). Multiple sources must be comma-delimited"],
-            ['--platforms=ios,macos', 'Lint against specific platforms (defaults to all platforms supported by the ' \
-              'podspec). Multiple platforms must be comma-delimited'],
-            ['--private', 'Lint skips checks that apply only to public specs'],
-            ['--swift-version=VERSION', 'The `SWIFT_VERSION` that should be used to lint the spec. ' \
-             'This takes precedence over the Swift versions specified by the spec or a `.swift-version` file'],
-            ['--include-podspecs=**/*.podspec', 'Additional ancillary podspecs which are used for linting via :path'],
-            ['--external-podspecs=**/*.podspec', 'Additional ancillary podspecs which are used for linting '\
-              'via :podspec. If there are --include-podspecs, then these are removed from them'],
-            ['--skip-import-validation', 'Lint skips validating that the pod can be imported'],
-            ['--skip-tests', 'Lint skips building and running tests during validation'],
-            ['--analyze', 'Validate with the Xcode Static Analysis tool'],
-            ['--onlyx64', 'Lint uses only x86-64 iphonesimulator'],
-          ].concat(super)
+          original_options.concat([['--onlyx64', 'Lint uses only x86-64 iphonesimulator']])
         end
 
+        alias_method :original_initialize, :initialize
+
         def initialize(argv)
-          @quick               = argv.flag?('quick')
-          @allow_warnings      = argv.flag?('allow-warnings')
-          @clean               = argv.flag?('clean', true)
-          @fail_fast           = argv.flag?('fail-fast', false)
-          @subspecs            = argv.flag?('subspecs', true)
-          @only_subspec        = argv.option('subspec')
-          @use_frameworks      = !argv.flag?('use-libraries')
-          @use_modular_headers = argv.flag?('use-modular-headers')
-          @source_urls         = argv.option('sources', Pod::TrunkSource::TRUNK_REPO_URL).split(',')
-          @platforms           = argv.option('platforms', '').split(',')
-          @private             = argv.flag?('private', false)
-          @swift_version       = argv.option('swift-version', nil)
-          @include_podspecs    = argv.option('include-podspecs', nil)
-          @external_podspecs   = argv.option('external-podspecs', nil)
-          @skip_import_validation = argv.flag?('skip-import-validation', false)
-          @skip_tests = argv.flag?('skip-tests', false)
-          @analyze = argv.flag?('analyze', false)
-          @podspecs_paths = argv.arguments!
           @only_x64 = argv.flag?('onlyx64', false)
-          super
+          original_initialize(argv)
         end
 
         def run
@@ -147,49 +111,19 @@ module Pod
   class Command
     class Spec < Command
       class Lint < Spec
+
+        class << self
+          alias_method :original_options, :options
+        end
         def self.options
-          [
-            ['--quick', 'Lint skips checks that would require to download and build the spec'],
-            ['--allow-warnings', 'Lint validates even if warnings are present'],
-            ['--subspec=NAME', 'Lint validates only the given subspec'],
-            ['--no-subspecs', 'Lint skips validation of subspecs'],
-            ['--no-clean', 'Lint leaves the build directory intact for inspection'],
-            ['--fail-fast', 'Lint stops on the first failing platform or subspec'],
-            ['--use-libraries', 'Lint uses static libraries to install the spec'],
-            ['--use-modular-headers', 'Lint uses modular headers during installation'],
-            ["--sources=#{Pod::TrunkSource::TRUNK_REPO_URL}", 'The sources from which to pull dependent pods ' \
-             "(defaults to #{Pod::TrunkSource::TRUNK_REPO_URL}). Multiple sources must be comma-delimited"],
-            ['--platforms=ios,macos', 'Lint against specific platforms (defaults to all platforms supported by the ' \
-              'podspec). Multiple platforms must be comma-delimited'],
-            ['--private', 'Lint skips checks that apply only to public specs'],
-            ['--swift-version=VERSION', 'The `SWIFT_VERSION` that should be used to lint the spec. ' \
-             'This takes precedence over the Swift versions specified by the spec or a `.swift-version` file'],
-            ['--skip-import-validation', 'Lint skips validating that the pod can be imported'],
-            ['--skip-tests', 'Lint skips building and running tests during validation'],
-            ['--analyze', 'Validate with the Xcode Static Analysis tool'],
-            ['--onlyx64', 'Lint uses only x86-64 iphonesimulator'],
-          ].concat(super)
+          original_options.concat([['--onlyx64', 'Lint uses only x86-64 iphonesimulator']])
         end
 
+        alias_method :original_initialize, :initialize
+
         def initialize(argv)
-          @quick           = argv.flag?('quick')
-          @allow_warnings  = argv.flag?('allow-warnings')
-          @clean           = argv.flag?('clean', true)
-          @fail_fast       = argv.flag?('fail-fast', false)
-          @subspecs        = argv.flag?('subspecs', true)
-          @only_subspec    = argv.option('subspec')
-          @use_frameworks  = !argv.flag?('use-libraries')
-          @use_modular_headers = argv.flag?('use-modular-headers')
-          @source_urls     = argv.option('sources', Pod::TrunkSource::TRUNK_REPO_URL).split(',')
-          @platforms       = argv.option('platforms', '').split(',')
-          @private         = argv.flag?('private', false)
-          @swift_version   = argv.option('swift-version', nil)
-          @skip_import_validation = argv.flag?('skip-import-validation', false)
-          @skip_tests = argv.flag?('skip-tests', false)
-          @analyze = argv.flag?('analyze', false)
-          @podspecs_paths = argv.arguments!
           @only_x64 = argv.flag?('onlyx64', false)
-          super
+          original_initialize(argv)
         end
 
         def run
@@ -243,46 +177,19 @@ module Pod
   class Command
     class Repo < Command
       class Push < Repo
+
+        class << self
+          alias_method :original_options, :options
+        end
         def self.options
-          [
-            ['--allow-warnings', 'Allows pushing even if there are warnings'],
-            ['--use-libraries', 'Linter uses static libraries to install the spec'],
-            ['--use-modular-headers', 'Lint uses modular headers during installation'],
-            ["--sources=#{Pod::TrunkSource::TRUNK_REPO_URL}", 'The sources from which to pull dependent pods ' \
-             '(defaults to all available repos). Multiple sources must be comma-delimited'],
-            ['--local-only', 'Does not perform the step of pushing REPO to its remote'],
-            ['--no-private', 'Lint includes checks that apply only to public repos'],
-            ['--skip-import-validation', 'Lint skips validating that the pod can be imported'],
-            ['--skip-tests', 'Lint skips building and running tests during validation'],
-            ['--commit-message="Fix bug in pod"', 'Add custom commit message. Opens default editor if no commit ' \
-              'message is specified'],
-            ['--use-json', 'Convert the podspec to JSON before pushing it to the repo'],
-            ['--swift-version=VERSION', 'The `SWIFT_VERSION` that should be used when linting the spec. ' \
-             'This takes precedence over the Swift versions specified by the spec or a `.swift-version` file'],
-            ['--no-overwrite', 'Disallow pushing that would overwrite an existing spec'],
-            ['--onlyx64', 'Lint uses only x86-64 iphonesimulator'],
-          ].concat(super)
+          original_options.concat([['--onlyx64', 'Lint uses only x86-64 iphonesimulator']])
         end
 
+        alias_method :original_initialize, :initialize
+
         def initialize(argv)
-          @allow_warnings = argv.flag?('allow-warnings')
-          @local_only = argv.flag?('local-only')
-          @repo = argv.shift_argument
-          @source = source_for_repo
-          @source_urls = argv.option('sources', config.sources_manager.all.map(&:url).join(',')).split(',')
-          @podspec = argv.shift_argument
-          @use_frameworks = !argv.flag?('use-libraries')
-          @use_modular_headers = argv.flag?('use-modular-headers', false)
-          @private = argv.flag?('private', true)
-          @message = argv.option('commit-message')
-          @commit_message = argv.flag?('commit-message', false)
-          @use_json = argv.flag?('use-json')
-          @swift_version = argv.option('swift-version', nil)
-          @skip_import_validation = argv.flag?('skip-import-validation', false)
-          @skip_tests = argv.flag?('skip-tests', false)
-          @allow_overwrite = argv.flag?('overwrite', true)
           @only_x64 = argv.flag?('onlyx64', false)
-          super
+          original_initialize(argv)
         end
 
         def validate_podspec_files
